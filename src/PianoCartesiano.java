@@ -1,4 +1,3 @@
-
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -11,10 +10,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
-import java.io.Console;
-import java.io.IOException;
 
-class PianoCartesiano extends JPanel  {
+public class PianoCartesiano extends JPanel  {
 
     double xOrigine = 0, yOrigine = 0;
     double scale = 1, maxY = 0;
@@ -52,9 +49,9 @@ class PianoCartesiano extends JPanel  {
 
     public void assi(Graphics2D g1) {
         if (g1 == null) return;
-        g1.draw(new Line2D.Double(mar - (xOrigine * scale) - 2, mar - (yOrigine * scale), mar - (xOrigine * scale) - 2,(height - mar))); //ASSE Y
-        g1.draw(new Line2D.Double(0, (height - mar) - (yOrigine * scale) - 2, (width ),(height - mar) - (yOrigine * scale) - 2)); //ASSE X
-        g1.setPaint(Color.BLUE);
+        g1.draw(new Line2D.Double(mar - (xOrigine * scale) - 2, mar - (yOrigine * scale), mar - (xOrigine * scale) - 2,(height - mar)));
+        g1.draw(new Line2D.Double(0, (height - mar) - (yOrigine * scale) - 2, (width ),(height - mar) - (yOrigine * scale) - 2));
+        g1.setPaint(Color.red);
     }
 
     protected void paintComponent(Graphics g) {
@@ -64,34 +61,20 @@ class PianoCartesiano extends JPanel  {
         width = getWidth();
         height = getHeight();
         scale = (double) (height - 2.0 * mar) / getMax();
-        g1.drawString(Double.toString(scale), 75, 75);
-        g1.setPaint(Color.BLACK);
-        g1.setBackground(new java.awt.Color(238, 238, 238));
+        //g1.drawString(Double.toString(scale), 75, 75);
+        g1.setPaint(Color.BLUE);
     }
 
-    public void plotFx(double datiXY[][], Graphics2D g1, Color color) {
-        g1.setPaint(color);
+
+    public void plotFx(Punto datiXY[], Graphics2D g1) {
         if (g1 == null) return;
         for (int i = 0; i < datiXY.length - 1; i++) {
-            double x1 = mar - (xOrigine * scale) + datiXY[i][0] * scale;
-            double y1 = (height - mar) - (yOrigine * scale) - scale * datiXY[i][1];
-            double x2 = mar - (xOrigine * scale) + datiXY[i + 1][0] * scale;
-            double y2 = (height - mar) - (yOrigine * scale) - scale * datiXY[i + 1][1];
-            g1.draw(new Line2D.Double(x1, y1, x2, y2));
-        }
-    }
-    public void plotPoint(double point[][], Color color, String label) throws NullPointerException {
-        g1.setPaint(color);
-        if (point.length != 0){
-            for (int i = 0; i <= point.length - 1; i++){
-                int x1 = (int)(mar - (xOrigine * scale) + point[i][0] * scale);
-                int y1 = (int)((height - mar) - (yOrigine * scale) - scale * point[i][1]);
-
-                g1.fillOval(x1, y1,4, 4);
-                g1.drawString(label + (i+1) +"(" + point[i][0] + ", " + point[i][1] + ");", x1 + 5, y1 + 15);
-            }
-        }else {
-            throw new NullPointerException("Dati non corretti!");
+            double x1 = mar - (xOrigine * scale) + datiXY[i].getX() * scale;
+            double y1 = (height - mar) - (yOrigine * scale) - scale * datiXY[i].getY();
+            //double x2 = mar - (xOrigine * scale) + datiXY[i + 1][0] * scale;
+            //double y2 = (height - mar) - (yOrigine * scale) - scale * datiXY[i + 1][1];
+            g1.fill(new Ellipse2D.Double(x1-2,y1-2,1,1));
+            //g1.draw(new Line2D.Double(x1, y1, x2, y2));
         }
     }
 
@@ -131,4 +114,4 @@ class PianoCartesiano extends JPanel  {
             repaint();
         }
     }
-}
+} 
